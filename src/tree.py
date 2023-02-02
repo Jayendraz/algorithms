@@ -87,7 +87,7 @@ class Tree:
 
         if root.LeftChild == None and root.RightChild == None:
             return int(root.DataValue)
-
+        # recursion
         left_result = self.evaluate(root.LeftChild)
         right_result = self.evaluate(root.RightChild)
 
