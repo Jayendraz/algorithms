@@ -4,15 +4,12 @@ from node import Node
 class Tree:
     OPERATORS = ['+', '-', '*', '/', '(', ')', '^']
 
-    def __init__(self, exp):
-        self.exp = exp
-
-    def convert_infix_to_postfix(self):
+    def convert_infix_to_postfix(self, exp):
         precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
         stack = []
         result = ""
 
-        for char in self.exp:
+        for char in exp:
             if not self.is_operator(char):
                 result += char
             elif char == '(':
@@ -35,9 +32,9 @@ class Tree:
             return True
         return False
 
-    def create_tree(self):
+    def create_tree(self, exp):
         stack = []
-        postfix_exp = self.convert_infix_to_postfix()
+        postfix_exp = self.convert_infix_to_postfix(exp)
         for item in postfix_exp:
             if self.is_operator(item):
                 sub_tree_node = Node(item)
@@ -50,11 +47,29 @@ class Tree:
                 new_node = Node(item)
                 stack.append(new_node)
 
-        expression_tree = stack.pop()
+        exp_tree = stack.pop()
+        return exp_tree
 
-        print(expression_tree.DataValue)
+        '''print(expression_tree.DataValue)
         print(expression_tree.RightChild.DataValue)
         print(expression_tree.LeftChild.DataValue)
         print(expression_tree.LeftChild.LeftChild.DataValue)
-        print(type(expression_tree))
+        print(type(expression_tree))'''
+
+    def print_tree(self, root):
+        if root == None:
+            print("Empty Tree")
+            return
+        print(root.DataValue, end=": ")
+        if root.LeftChild != None:
+            print("L", root.LeftChild.DataValue, end=" & ")
+        if root.RightChild != None:
+            print("R", root.RightChild.DataValue, end=" ")
+        # calling print tree recursively for all nodes in tree
+        print()
+        self.print_tree(root.LeftChild)
+        self.print_tree(root.RightChild)
+
         # traverse tree and evaluate (DFS/BFS)
+
+
