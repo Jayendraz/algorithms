@@ -7,23 +7,25 @@ class Tree:
     def convert_infix_to_postfix(self, exp):
         precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
         stack = []
-        result = ""
+        result = []
 
         for char in exp:
+            if char == " ":
+                continue
             if not self.is_operator(char):
-                result += char
+                result.append(char)
             elif char == '(':
                 stack.append('(')
             elif char == ')':
                 while stack and stack[-1] != '(':
-                    result += stack.pop()
+                    result.append(stack.pop())
                 stack.pop()
             else:
                 while stack and stack[-1] != '(' and precedence[char] <= precedence[stack[-1]]:
                     result += stack.pop()
                 stack.append(char)
         while stack:
-            result += stack.pop()
+            result.append(stack.pop())
 
         return result
 
@@ -90,4 +92,53 @@ class Tree:
             return left_result * right_result
         elif root.DataValue == '/':
             return left_result / right_result
+
+    def convert_infix_to_postfix_new(self, exp):
+        precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+        stack = []
+        result = []
+
+        for char in exp:
+            if char == " ":
+                continue
+            if not self.is_operator(char):
+                result.append(char)
+            elif char == '(':
+                stack.append('(')
+            elif char == ')':
+                while stack and stack[-1] != '(':
+                    result.append(stack.pop())
+                stack.pop()
+            else:
+                while stack and stack[-1] != '(' and precedence[char] <= precedence[stack[-1]]:
+                    result += stack.pop()
+                stack.append(char)
+        while stack:
+            result.append(stack.pop())
+
+        return result
+
+    def create_tree_new(self, exp):
+        stack = []
+        postfix_exp = self.convert_infix_to_postfix_new(exp)
+        for item in postfix_exp:
+            if self.is_operator(item):
+                sub_tree_node = Node(item)
+                right = stack.pop()
+                left = stack.pop()
+                sub_tree_node.RightChild = right
+                sub_tree_node.LeftChild = left
+                stack.append(sub_tree_node)
+            else:
+                new_node = Node(item)
+                stack.append(new_node)
+
+        exp_tree = stack.pop()
+        self.print_tree(exp_tree)
+
+        evaluation = self.evaluate(exp_tree)
+        print("-----------------")
+        print()
+        print(evaluation)
+        print()
 
