@@ -58,7 +58,6 @@ class Tree:
 
     def print_tree(self, root):
         if root == None:
-            print("Empty Tree")
             return
         print(root.DataValue, end=": ")
         if root.LeftChild != None:
@@ -72,4 +71,23 @@ class Tree:
 
         # traverse tree and evaluate (DFS/BFS)
 
+    def evaluate(self, root):
+        if root == None:
+            print("Empty Tree")
+            return 0
+
+        if root.LeftChild == None and root.RightChild == None:
+            return int(root.DataValue)
+
+        left_result = self.evaluate(root.LeftChild)
+        right_result = self.evaluate(root.RightChild)
+
+        if root.DataValue == '+':
+            return left_result + right_result
+        elif root.DataValue == '-':
+            return left_result - right_result
+        elif root.DataValue == '*':
+            return left_result * right_result
+        elif root.DataValue == '/':
+            return left_result / right_result
 
