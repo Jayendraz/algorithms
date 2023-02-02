@@ -1,8 +1,22 @@
-from node import Node
+import re
+from src.node import Node
 
 
 class Tree:
     OPERATORS = ['+', '-', '*', '/', '(', ')', '^']
+    REGEX_TO_EXTRACT_NUMBERS = "-?\d*\.{0,1}\d+"
+
+    def convert_string_list_structure(self, exp):
+        expression = exp
+        numbers = re.findall(Tree.REGEX_TO_EXTRACT_NUMBERS, expression)
+        expression = list(re.sub(Tree.REGEX_TO_EXTRACT_NUMBERS, "#", expression).replace(" ", ""))
+        count = 0
+        for i, c in enumerate(expression):
+            if c == "#":
+                expression[i] = numbers[count]
+                count += 1
+
+        return expression
 
     def convert_infix_to_postfix(self, exp):
         precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
@@ -12,7 +26,7 @@ class Tree:
         for char in exp:
             if char == " ":
                 continue
-            if not self.is_operator(char):
+            elif not self.is_operator(char) and char.lstrip("-").isdigit():
                 result.append(char)
             elif char == '(':
                 stack.append('(')
@@ -36,7 +50,10 @@ class Tree:
 
     def create_tree(self, exp):
         stack = []
-        postfix_exp = self.convert_infix_to_postfix(exp)
+        #if not exp:
+        #    raise IndexError
+        exp_list = self.convert_string_list_structure(exp)
+        postfix_exp = self.convert_infix_to_postfix(exp_list)
         for item in postfix_exp:
             if self.is_operator(item):
                 sub_tree_node = Node(item)
@@ -64,8 +81,6 @@ class Tree:
         print()
         self.print_tree(root.LeftChild)
         self.print_tree(root.RightChild)
-
-        # traverse tree and evaluate (DFS/BFS)
 
     def evaluate(self, root):
         if root == None:
