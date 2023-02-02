@@ -50,8 +50,6 @@ class Tree:
 
     def create_tree(self, exp):
         stack = []
-        #if not exp:
-        #    raise IndexError
         exp_list = self.convert_string_list_structure(exp)
         postfix_exp = self.convert_infix_to_postfix(exp_list)
         for item in postfix_exp:
@@ -77,7 +75,7 @@ class Tree:
             print("L", root.LeftChild.DataValue, end=" & ")
         if root.RightChild != None:
             print("R", root.RightChild.DataValue, end=" ")
-        # calling print tree recursively for all nodes in tree
+        # recursion
         print()
         self.print_tree(root.LeftChild)
         self.print_tree(root.RightChild)
