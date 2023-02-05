@@ -6,7 +6,7 @@ class Tree:
     OPERATORS = ['+', '-', '*', '/', '(', ')', '^']
     REGEX_TO_EXTRACT_NUMBERS = "-?\d*\.{0,1}\d+"
 
-    def convert_string_list_structure(self, exp):
+    def convert_string_to_list(self, exp):
         expression = exp
         numbers = re.findall(Tree.REGEX_TO_EXTRACT_NUMBERS, expression)
         expression = list(re.sub(Tree.REGEX_TO_EXTRACT_NUMBERS, "#", expression).replace(" ", ""))
@@ -50,7 +50,7 @@ class Tree:
 
     def create_tree(self, exp):
         stack = []
-        exp_list = self.convert_string_list_structure(exp)
+        exp_list = self.convert_string_to_list(exp)
         postfix_exp = self.convert_infix_to_postfix(exp_list)
         for item in postfix_exp:
             if self.is_operator(item):
